@@ -1,0 +1,54 @@
+#=========================================================================
+# run_test.yml
+#=========================================================================
+
+name: Run Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    null
+
+jobs:
+  sim:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install verilator
+        run: |
+          wget --progress=dot:giga https://github.com/cornell-ece2300/github-actions-prebuild/raw/main/github-actions-verilator-5.050.tar.gz
+          tar -C ${HOME} -xzf github-actions-verilator-5.050.tar.gz
+          echo "${HOME}/verilator/bin" >> $GITHUB_PATH
+          echo "PKG_CONFIG_PATH=${HOME}/verilator/share/pkgconfig:${PKG_CONFIG_PATH}" >> $GITHUB_ENV
+
+      - name: Check verilator
+        run: |
+          which verilator
+          verilator --version
+          pkg-config --modversion verilator
+          pkg-config --cflags verilator
+
+      - name: Install iverilog
+        run: |
+          wget --progress=dot:giga https://github.com/cornell-ece2300/github-actions-prebuild/raw/main/github-actions-iverilog-13.0.tar.gz
+          tar -C ${HOME} -xzf github-actions-iverilog-13.0.tar.gz
+          echo "${HOME}/iverilog/bin" >> $GITHUB_PATH
+
+      - name: Check iverilog
+        run: |
+          which iverilog
+          iverilog -V
+
+      - name: Run sim tests
+        timeout-minutes: 10
+        run: |
+          verilator -Wall --lint-only PairTripleDetector_GL.v
+          iverilog -Wall -g2012 -o PairTripleDetector_GL-test PairTripleDetector_GL-test.v
+          ./PairTripleDetector_GL-test | tee PairTripleDetector_GL-test.log
+          ! grep -q FAILED *-test.log && ! grep -q ERROR *-test.log
+

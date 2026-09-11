@@ -1,0 +1,17 @@
+rulesets:
+  GL:
+    - forbid-special-blocks
+    - restrict-assign-rhs
+    - restrict-gate-primitives
+    - forbid-module-instantiation
+    - restrict-port-connections
+           
+  Struct: 
+    - forbid-special-blocks
+    - restrict-assign-rhs
+    - restrict-gate-primitives
+    - restrict-port-connections
+
+files:
+  ptd/PairTripleDetector_GL.v:   GL
+  ptd/PairTripleDetector2_GL.v:  Struct
