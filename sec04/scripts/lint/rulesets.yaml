@@ -1,0 +1,20 @@
+rulesets:
+  GL:
+    - forbid-special-blocks
+    - restrict-assign-rhs
+    - restrict-gate-primitives
+    - forbid-module-instantiation
+    - restrict-port-connections
+           
+  Struct: 
+    - forbid-special-blocks
+    - restrict-assign-rhs
+    - restrict-gate-primitives
+    - restrict-port-connections
+
+files:
+  lab1/BinaryToBinCodedDec_GL.v:   GL
+  lab1/BinaryToSevenSegOpt_GL.v:   GL
+  lab1/BinaryToSevenSegUnopt_GL.v: GL
+  lab1/DisplayOpt_GL.v:            Struct
+  lab1/DisplayUnopt_GL.v:          Struct
