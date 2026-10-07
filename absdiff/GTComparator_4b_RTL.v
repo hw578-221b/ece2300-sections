@@ -14,13 +14,14 @@ module GTComparator_4b_RTL
   (* keep=1 *) output logic       gt
 );
 
-  //''' ACTIVITY '''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-  // Implement 4b greater-than comparator using RTL
-  //''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  always_comb begin
+    case (in0 > in1)
+      1'b1: gt = 1'b1;
+      1'b0: gt = 1'b0;
+      default: gt = 1'bx;
+    endcase
+  end
 
-  `ECE2300_UNUSED( in0 );
-  `ECE2300_UNUSED( in1 );
-  `ECE2300_FLOATING( gt );
 
 endmodule
 
